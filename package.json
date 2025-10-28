@@ -1,0 +1,26 @@
+{
+  "name": "zerosync-backend",
+  "version": "0.1.0",
+  "description": "ZeroSync SDK Backend - Rollup simulation and deployment engine",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "cli": "node packages/cli/bin/zerosync.js",
+    "zerosync": "node packages/cli/bin/zerosync.js",
+    "simulate": "node packages/cli/bin/zerosync.js simulate",
+    "run": "node packages/cli/bin/zerosync.js run",
+    "deploy": "node packages/cli/bin/zerosync.js deploy",
+    "api": "node packages/api/src/server.js",
+    "dev": "npm run api"
+  },
+  "keywords": [
+    "rollup",
+    "zk",
+    "ethereum",
+    "l2"
+  ],
+  "author": "Manasvi",
+  "license": "MIT"
+}

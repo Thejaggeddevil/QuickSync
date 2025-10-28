@@ -1,0 +1,26 @@
+{
+  "name": "@zerosync/cli",
+  "version": "0.1.0",
+  "description": "ZeroSync CLI - Rollup development toolkit",
+  "main": "bin/zerosync.js",
+  "bin": {
+    "zerosync": "./bin/zerosync.js"
+  },
+  "scripts": {
+    "test": "node bin/zerosync.js --help"
+  },
+  "dependencies": {
+    "commander": "^11.1.0",
+    "chalk": "^4.1.2",
+    "ora": "^5.4.1",
+    "prompts": "^2.4.2",
+    "@zerosync/sdk-core": "*"
+  },
+  "keywords": [
+    "cli",
+    "rollup",
+    "zk"
+  ],
+  "author": "Manasvi",
+  "license": "MIT"
+}

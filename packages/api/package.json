@@ -1,0 +1,26 @@
+{
+  "name": "@zerosync/api",
+  "version": "0.1.0",
+  "description": "ZeroSync REST API - Express server for frontend integration",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "morgan": "^1.10.0",
+    "@zerosync/sdk-core": "*"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  },
+  "keywords": [
+    "api",
+    "express",
+    "rollup"
+  ],
+  "author": "Manasvi",
+  "license": "MIT"
+}

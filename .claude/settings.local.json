@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run api)",
+      "Bash(zerosync simulate --help)",
+      "Bash(node -e \"const { ProofEngine } = require(''./packages/sdk-core/src/index.js''); const pe = new ProofEngine(); pe.testRealProofs().then(() => console.log(''Real proof test completed!''));\")",
+      "Bash(npm install)",
+      "Bash(node packages/sdk-core/test-zk-integration.js)",
+      "Bash(npm install snarkjs@0.7.4 circom2@0.14.0)",
+      "Bash(npm ls snarkjs)"
+    ],
+    "deny": []
+  }
+}

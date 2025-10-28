@@ -1,0 +1,20 @@
+{
+  "name": "@zerosync/sdk-core",
+  "version": "0.1.0",
+  "description": "ZeroSync SDK Core - Sequencer, Proof Engine, and State Management",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Tests coming soon\""
+  },
+  "dependencies": {
+    "ethers": "^6.9.0",
+    "better-sqlite3": "^9.2.2"
+  },
+  "keywords": [
+    "rollup",
+    "sequencer",
+    "zk-proof"
+  ],
+  "author": "Manasvi",
+  "license": "MIT"
+}

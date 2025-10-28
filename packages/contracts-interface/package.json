@@ -1,0 +1,20 @@
+{
+  "name": "@zerosync/contracts-interface",
+  "version": "0.1.0",
+  "description": "ZeroSync Contracts Interface - Ethers.js wrapper for Anchor contract",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Tests coming soon\""
+  },
+  "dependencies": {
+    "ethers": "^6.9.0",
+    "dotenv": "^16.3.1"
+  },
+  "keywords": [
+    "smart-contracts",
+    "ethers",
+    "anchor"
+  ],
+  "author": "Manasvi",
+  "license": "MIT"
+}
