@@ -13,7 +13,9 @@
     "run": "node packages/cli/bin/zerosync.js run",
     "deploy": "node packages/cli/bin/zerosync.js deploy",
     "api": "node packages/api/src/server.js",
-    "dev": "npm run api"
+    "dev": "npm run api",
+    "setup-circuit": "node packages/sdk-core/scripts/setup-circuit.js",
+    "test-zk": "node packages/sdk-core/test-zk-integration.js"
   },
   "keywords": [
     "rollup",
@@ -22,5 +24,14 @@
     "l2"
   ],
   "author": "Manasvi",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "circomlib": "^2.0.5",
+    "circomlibjs": "^0.1.7",
+    "ffjavascript": "^0.3.0",
+    "snarkjs": "^0.7.4"
+  },
+  "devDependencies": {
+    "circom_tester": "^0.0.19"
+  }
 }
