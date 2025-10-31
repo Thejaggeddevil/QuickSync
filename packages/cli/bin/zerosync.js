@@ -38,6 +38,9 @@ program
   .command('run')
   .description('Start live rollup mode (sequencer + proof engine)')
   .option('-p, --port <port>', 'API server port', '3001')
+  .option('--proof <mode>', 'Proof mode: zk or mock', 'mock')
+  .option('--batch-size <size>', 'Batch size (transactions per batch)', '8')
+  .option('--batch-timeout <ms>', 'Batch timeout in milliseconds', '10000')
   .action(runCommand);
 
 program.parse(process.argv);

@@ -37,11 +37,25 @@ async function setupCircuit() {
     // Step 1: Compile circuit
     console.log('📦 Step 1: Compiling circuit...');
     const circuitPath = path.join(CIRCUIT_DIR, 'rollup.circom');
+    const r1csPath = path.join(BUILD_DIR, 'rollup.r1cs');
+    const wasmPath = path.join(BUILD_DIR, 'rollup.wasm');
+    const symPath = path.join(BUILD_DIR, 'rollup.sym');
+    
     const { stdout: compileOut } = await execAsync(
-      `circom ${circuitPath} --r1cs --wasm --sym --output ${BUILD_DIR}`
+      `circom ${circuitPath} -r ${r1csPath} -w ${wasmPath} -s ${symPath}`
     );
-    console.log(compileOut);
+    if (compileOut) console.log(compileOut);
     console.log('✅ Circuit compiled\n');
+    
+    // Move WASM to proper directory structure for snarkjs
+    const wasmDir = path.join(BUILD_DIR, 'rollup_js');
+    if (!fs.existsSync(wasmDir)) {
+      fs.mkdirSync(wasmDir);
+    }
+    const targetWasmPath = path.join(wasmDir, 'rollup.wasm');
+    if (fs.existsSync(wasmPath)) {
+      fs.renameSync(wasmPath, targetWasmPath);
+    }
 
     // Step 2: Generate witness calculator
     console.log('📦 Step 2: Witness calculator generated (WASM)\n');
@@ -53,17 +67,43 @@ async function setupCircuit() {
     if (!fs.existsSync(ptauPath)) {
       console.log('   Downloading ptau file (~3MB)...');
       const https = require('https');
-      const file = fs.createWriteStream(ptauPath);
+      const http = require('http');
+      const { pipeline } = require('stream/promises');
       
       await new Promise((resolve, reject) => {
-        https.get('https://hermez.s3-eu-west-1.amazonaws.com/powersOfTau28_hez_final_08.ptau', (response) => {
-          response.pipe(file);
-          file.on('finish', () => {
-            file.close();
-            resolve();
-          });
+        const file = fs.createWriteStream(ptauPath);
+        const url = 'https://storage.googleapis.com/zkevm/ptau/powersOfTau28_hez_final_08.ptau';
+        
+        https.get(url, (response) => {
+          // Handle redirects
+          if (response.statusCode === 301 || response.statusCode === 302) {
+            https.get(response.headers.location, (redirectResponse) => {
+              redirectResponse.pipe(file);
+              file.on('finish', () => {
+                file.close(() => {
+                  console.log('   Download complete!');
+                  resolve();
+                });
+              });
+            }).on('error', (err) => {
+              file.close();
+              fs.unlinkSync(ptauPath);
+              reject(err);
+            });
+          } else {
+            response.pipe(file);
+            file.on('finish', () => {
+              file.close(() => {
+                console.log('   Download complete!');
+                resolve();
+              });
+            });
+          }
         }).on('error', (err) => {
-          fs.unlinkSync(ptauPath);
+          file.close();
+          if (fs.existsSync(ptauPath)) {
+            fs.unlinkSync(ptauPath);
+          }
           reject(err);
         });
       });
@@ -72,7 +112,6 @@ async function setupCircuit() {
 
     // Step 4: Generate proving key
     console.log('📦 Step 4: Generating zkey (proving key)...');
-    const r1csPath = path.join(BUILD_DIR, 'rollup.r1cs');
     const zkeyPath = path.join(BUILD_DIR, 'rollup_0000.zkey');
     const finalZkeyPath = path.join(BUILD_DIR, 'rollup_final.zkey');
 

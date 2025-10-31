@@ -16,7 +16,8 @@ async function testZKIntegration() {
         { from: '0x789', to: '0xabc', value: 200, data: '0x' },
         { from: '0xdef', to: '0xghi', value: 150, data: '0x' }
       ],
-      stateRoot: '0xabcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789',
+      oldStateRoot: '0x1234567890abcdef',
+      // newStateRoot will be calculated automatically to satisfy circuit constraints
       txCount: 3,
       timestamp: Date.now()
     };

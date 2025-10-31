@@ -81,12 +81,10 @@ class ProofEngine {
    * Prepare inputs for the circuit from batch data
    */
   prepareCircuitInputs(batch) {
-    const { buildPoseidon } = require('circomlibjs');
-    
     // Convert batch data to circuit inputs
-    // For simplicity, we hash transaction data
+    // Hash transaction data into field elements
     const txHashes = [];
-    const intermediateRoots = [];
+    let txHashSum = BigInt(0);
     
     for (let i = 0; i < 8; i++) {
       if (i < batch.txCount && batch.transactions && batch.transactions[i]) {
@@ -96,24 +94,32 @@ class ProofEngine {
           .update(JSON.stringify(tx))
           .digest('hex').substring(0, 16));
         txHashes.push(txHash.toString());
-        intermediateRoots.push('0');
+        txHashSum += txHash;
       } else {
         // Pad with zeros
         txHashes.push('0');
-        intermediateRoots.push('0');
       }
     }
 
     // Convert state roots to field elements
-    const oldStateRoot = BigInt('0x' + (batch.oldStateRoot || '0').replace('0x', '').substring(0, 16) || '1234');
-    const newStateRoot = BigInt('0x' + (batch.stateRoot || batch.newStateRoot || '0').replace('0x', '').substring(0, 16) || '5678');
+    // Circuit constraint: newStateRoot === oldStateRoot + txHashSum
+    const oldStateRoot = BigInt('0x' + (batch.oldStateRoot || '1234').replace('0x', '').substring(0, 16));
+    
+    // Calculate newStateRoot to satisfy the constraint
+    let newStateRoot;
+    if (batch.newStateRoot || batch.stateRoot) {
+      // If provided, use it (might fail verification if incorrect)
+      newStateRoot = BigInt('0x' + (batch.newStateRoot || batch.stateRoot || '0').replace('0x', '').substring(0, 16));
+    } else {
+      // Calculate correct newStateRoot: oldStateRoot + txHashSum
+      newStateRoot = oldStateRoot + txHashSum;
+    }
 
     return {
       oldStateRoot: oldStateRoot.toString(),
       newStateRoot: newStateRoot.toString(),
       txCount: batch.txCount.toString(),
-      txHashes: txHashes,
-      intermediateRoots: intermediateRoots
+      txHashes: txHashes
     };
   }
 

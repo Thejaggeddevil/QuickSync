@@ -3,27 +3,28 @@ const { spawn } = require('child_process');
 const path = require('path');
 
 module.exports = async function run(options) {
-  console.log(chalk.cyan('🚀 Starting ZeroSync rollup in live mode...\n'));
+  console.log(chalk.cyan('🚀 Starting ZeroSync Rollup Engine\n'));
+  
+  console.log(chalk.white('Configuration:'));
+  console.log(chalk.gray(`  Proof Mode: ${options.proof}`));
+  console.log(chalk.gray(`  Batch Size: ${options.batchSize}`));
+  console.log(chalk.gray(`  Batch Timeout: ${options.batchTimeout}ms`));
+  console.log(chalk.gray(`  API Port: ${options.port}`));
+  console.log('');
 
   try {
-    // Start the Express API server
-    const apiPath = path.join(__dirname, '../../api/src/server.js');
+    // Start the Express API server with proof mode
+    const apiPath = path.join(__dirname, '../../api/src/server-v2.js');
     const apiProcess = spawn('node', [apiPath], {
-      env: { ...process.env, PORT: options.port },
+      env: { 
+        ...process.env, 
+        PORT: options.port,
+        PROOF_MODE: options.proof,
+        BATCH_SIZE: options.batchSize,
+        BATCH_TIMEOUT: options.batchTimeout
+      },
       stdio: 'inherit'
     });
-
-    console.log(chalk.green(`✓ API server running on port ${options.port}`));
-    console.log(chalk.white('\nEndpoints:'));
-    console.log(chalk.gray(`  POST http://localhost:${options.port}/api/transactions`));
-    console.log(chalk.gray(`  GET  http://localhost:${options.port}/api/batches`));
-    console.log(chalk.gray(`  GET  http://localhost:${options.port}/api/proofs`));
-    console.log(chalk.gray(`  GET  http://localhost:${options.port}/api/status`));
-    
-    console.log(chalk.cyan('\n📊 Dashboard available at:'));
-    console.log(chalk.white(`  http://localhost:3000 (connect to API on port ${options.port})`));
-    
-    console.log(chalk.yellow('\n💡 Press Ctrl+C to stop the rollup\n'));
 
     // Handle graceful shutdown
     process.on('SIGINT', () => {
