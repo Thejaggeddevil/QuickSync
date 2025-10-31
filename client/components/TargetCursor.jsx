@@ -12,7 +12,6 @@ export default function TargetCursor({ targetSelector = ".cursor-target", spinDu
     () => ({
       borderWidth: 3,
       cornerSize: 12,
-      parallaxStrength: 0.00005,
     }),
     [],
   );
@@ -30,8 +29,19 @@ export default function TargetCursor({ targetSelector = ".cursor-target", spinDu
   useEffect(() => {
     if (!cursorRef.current) return;
     const originalCursor = document.body.style.cursor;
+    const originalHtmlCursor = document.documentElement.style.cursor;
     if (hideDefaultCursor) {
       document.body.style.cursor = "none";
+      document.documentElement.style.cursor = "none";
+      // Hide cursor on all interactive elements
+      const style = document.createElement("style");
+      style.id = "hide-cursor-style";
+      style.textContent = `
+        *, *::before, *::after {
+          cursor: none !important;
+        }
+      `;
+      document.head.appendChild(style);
     }
 
     const cursor = cursorRef.current;
@@ -91,12 +101,50 @@ export default function TargetCursor({ targetSelector = ".cursor-target", spinDu
     window.addEventListener("mousedown", mouseDownHandler);
     window.addEventListener("mouseup", mouseUpHandler);
 
+    const isClickable = (element) => {
+      if (!element) return false;
+      // Check if it's a clickable element
+      const clickableTags = ['A', 'BUTTON'];
+      const hasOnClick = element.onclick || element.getAttribute('onclick');
+      const hasRoleButton = element.getAttribute('role') === 'button';
+      const hasHref = element.hasAttribute && element.hasAttribute('href');
+      const hasCursorTarget = element.classList && (element.classList.contains('cursor-target') || element.hasAttribute('data-cursor-target'));
+      const isClickableTag = clickableTags.includes(element.tagName);
+      
+      // Check if it's a Card but has clickable behavior
+      const isCard = element.classList && (
+        element.classList.contains('rounded-lg') || 
+        element.classList.contains('rounded-xl') ||
+        element.classList.contains('border')
+      );
+      
+      if (isCard) {
+        // Card is clickable if it has onClick, is inside a clickable parent, or has cursor-target
+        const hasClickableParent = element.closest('a, button, [role="button"], [onclick], .cursor-target, [data-cursor-target]');
+        return hasOnClick || hasClickableParent || hasCursorTarget || element.style.cursor === 'pointer';
+      }
+      
+      return isClickableTag || hasOnClick || hasRoleButton || hasHref || hasCursorTarget;
+    };
+
     const enterHandler = (e) => {
       const directTarget = e.target;
       const allTargets = [];
       let current = directTarget;
       while (current && current !== document.body) {
-        if (current.matches && current.matches(targetSelector)) allTargets.push(current);
+        // First check if it matches explicit selector
+        if (current.matches && current.matches(targetSelector)) {
+          allTargets.push(current);
+        } else {
+          // Also check for cards (rounded-lg with border) but only if clickable
+          const isCard = current.classList && (
+            (current.classList.contains('rounded-lg') || current.classList.contains('rounded-xl')) &&
+            current.classList.contains('border')
+          );
+          if (isCard && isClickable(current)) {
+            allTargets.push(current);
+          }
+        }
         current = current.parentElement;
       }
       const target = allTargets[0] || null;
@@ -121,23 +169,31 @@ export default function TargetCursor({ targetSelector = ".cursor-target", spinDu
         const cursorCenterX = cursorRect.left + cursorRect.width / 2;
         const cursorCenterY = cursorRect.top + cursorRect.height / 2;
         const [tlc, trc, brc, blc] = Array.from(cornersRef.current);
-        const { borderWidth, cornerSize, parallaxStrength } = constants;
+        const { borderWidth, cornerSize } = constants;
 
-        let tlOffset = { x: rect.left - cursorCenterX - borderWidth, y: rect.top - cursorCenterY - borderWidth };
-        let trOffset = { x: rect.right - cursorCenterX + borderWidth - cornerSize, y: rect.top - cursorCenterY - borderWidth };
-        let brOffset = { x: rect.right - cursorCenterX + borderWidth - cornerSize, y: rect.bottom - cursorCenterY + borderWidth - cornerSize };
-        let blOffset = { x: rect.left - cursorCenterX - borderWidth, y: rect.bottom - cursorCenterY + borderWidth - cornerSize };
+        // Position corners to exactly match the element's actual boundaries
+        // Top-left corner
+        let tlOffset = { 
+          x: rect.left - cursorCenterX - borderWidth, 
+          y: rect.top - cursorCenterY - borderWidth 
+        };
+        // Top-right corner
+        let trOffset = { 
+          x: rect.right - cursorCenterX + borderWidth - cornerSize, 
+          y: rect.top - cursorCenterY - borderWidth 
+        };
+        // Bottom-right corner
+        let brOffset = { 
+          x: rect.right - cursorCenterX + borderWidth - cornerSize, 
+          y: rect.bottom - cursorCenterY + borderWidth - cornerSize 
+        };
+        // Bottom-left corner
+        let blOffset = { 
+          x: rect.left - cursorCenterX - borderWidth, 
+          y: rect.bottom - cursorCenterY + borderWidth - cornerSize 
+        };
 
-        if (mouseX !== undefined && mouseY !== undefined) {
-          const targetCenterX = rect.left + rect.width / 2;
-          const targetCenterY = rect.top + rect.height / 2;
-          const mouseOffsetX = (mouseX - targetCenterX) * parallaxStrength;
-          const mouseOffsetY = (mouseY - targetCenterY) * parallaxStrength;
-          tlOffset.x += mouseOffsetX; tlOffset.y += mouseOffsetY;
-          trOffset.x += mouseOffsetX; trOffset.y += mouseOffsetY;
-          brOffset.x += mouseOffsetX; brOffset.y += mouseOffsetY;
-          blOffset.x += mouseOffsetX; blOffset.y += mouseOffsetY;
-        }
+        // Remove parallax effect to make corners stick to actual boundaries
 
         const tl = gsap.timeline();
         const cornersEls = [tlc, trc, brc, blc];
@@ -212,6 +268,9 @@ export default function TargetCursor({ targetSelector = ".cursor-target", spinDu
       if (activeTarget) cleanupTarget(activeTarget);
       spinTl.current?.kill();
       document.body.style.cursor = originalCursor;
+      document.documentElement.style.cursor = originalHtmlCursor;
+      const style = document.getElementById("hide-cursor-style");
+      if (style) style.remove();
     };
   }, [targetSelector, spinDuration, moveCursor, constants, hideDefaultCursor]);
 

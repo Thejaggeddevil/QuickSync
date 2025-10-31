@@ -284,7 +284,7 @@ export default function Layout({ children }) {
         <TargetCursor
           hideDefaultCursor={true}
           targetSelector={
-            'a, button, [role="button"], [class*="rounded-lg"][class*="border"], [data-cursor-target], .cursor-target'
+            'a[href], button:not([disabled]), [role="button"]:not([disabled]), [data-cursor-target], .cursor-target, [onclick], nav button, nav a'
           }
           spinDuration={4}
         />
