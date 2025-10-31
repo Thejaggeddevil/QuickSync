@@ -22,8 +22,8 @@ export default function TargetCursor({ targetSelector = ".cursor-target", spinDu
     gsap.to(cursorRef.current, {
       x,
       y,
-      duration: 0.1,
-      ease: "power3.out",
+      duration: 0.4,
+      ease: "power2.out",
     });
   }, []);
 
@@ -143,7 +143,7 @@ export default function TargetCursor({ targetSelector = ".cursor-target", spinDu
         const cornersEls = [tlc, trc, brc, blc];
         const offsets = [tlOffset, trOffset, brOffset, blOffset];
         cornersEls.forEach((corner, index) => {
-          tl.to(corner, { x: offsets[index].x, y: offsets[index].y, duration: 0.2, ease: "power2.out" }, 0);
+          tl.to(corner, { x: offsets[index].x, y: offsets[index].y, duration: 0.5, ease: "power2.out" }, 0);
         });
       };
 
@@ -176,7 +176,7 @@ export default function TargetCursor({ targetSelector = ".cursor-target", spinDu
           ];
           const tl = gsap.timeline();
           corners.forEach((corner, index) => {
-            tl.to(corner, { x: positions[index].x, y: positions[index].y, duration: 0.3, ease: "power3.out" }, 0);
+            tl.to(corner, { x: positions[index].x, y: positions[index].y, duration: 0.6, ease: "power2.out" }, 0);
           });
         }
         resumeTimeout = setTimeout(() => {

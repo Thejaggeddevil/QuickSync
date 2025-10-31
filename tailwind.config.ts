@@ -57,10 +57,9 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
-        neon: {
-          blue: "hsl(var(--neon-blue))",
-          purple: "hsl(var(--neon-purple))",
-          cyan: "hsl(var(--neon-cyan))",
+        theme: {
+          primary: "hsl(var(--theme-primary))",
+          accent: "hsl(var(--theme-accent))",
         },
       },
       borderRadius: {
@@ -69,10 +68,12 @@ export default {
         sm: "calc(var(--radius) - 4px)",
         "2xl": "1.5rem",
       },
+      fontFamily: {
+        sans: ["JetBrains Mono", "monospace"],
+        mono: ["JetBrains Mono", "monospace"],
+      },
       boxShadow: {
-        glow: "0 0 20px hsl(var(--neon-blue) / 0.5)",
-        "glow-purple": "0 0 20px hsl(var(--neon-purple) / 0.5)",
-        "glow-cyan": "0 0 20px hsl(var(--neon-cyan) / 0.5)",
+        glow: "0 0 12px hsl(var(--theme-primary) / 0.3)",
       },
       keyframes: {
         "accordion-down": {

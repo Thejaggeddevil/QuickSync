@@ -58,7 +58,7 @@ export default function Dashboard() {
     <div className="p-6 md:p-8 space-y-8">
       {/* Header */}
       <div className="space-y-2">
-        <h2 className="text-3xl font-bold bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
+        <h2 className="text-3xl font-bold text-foreground">
           QuickSync Playground
         </h2>
         <p className="text-muted-foreground text-lg">
@@ -98,9 +98,9 @@ export default function Dashboard() {
           <Card
             key={idx}
             className={cn(
-              "bg-gradient-to-br from-card to-card/50 border-border/40 backdrop-blur-sm",
+              "bg-card border border-border/40",
               metric.highlight &&
-                "border-neon-blue/50 shadow-glow"
+                "border-primary shadow-glow"
             )}
           >
             <CardContent className="p-6">
@@ -112,7 +112,7 @@ export default function Dashboard() {
                   {/* reserved for future metric icon */}
                 </div>
                 <div className="flex items-baseline gap-2">
-                  <p className="text-3xl font-bold text-neon-blue">
+                  <p className="text-3xl font-bold text-primary">
                     {metric.value}
                   </p>
                   {metric.unit && (
@@ -128,11 +128,11 @@ export default function Dashboard() {
       </div>
 
       {/* Pipeline Visualization */}
-      <Card className="bg-gradient-to-br from-card to-card/50 border-border/40 backdrop-blur-sm overflow-hidden">
+      <Card className="bg-card border border-border/40 overflow-hidden">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <span>Pipeline Flow</span>
-            <span className="inline-block w-2 h-2 rounded-full bg-neon-cyan animate-pulse"></span>
+            <span className="inline-block w-2 h-2 rounded-full bg-primary animate-pulse"></span>
           </CardTitle>
           <CardDescription>
             Current transaction batching and proof generation pipeline
@@ -152,11 +152,11 @@ export default function Dashboard() {
                     className={cn(
                       "flex flex-col items-center gap-2 p-4 rounded-lg transition-all duration-500 min-w-max",
                       animatedBatch === idx
-                        ? "bg-gradient-to-r from-neon-blue/30 to-neon-purple/30 border border-neon-blue/50 shadow-glow"
+                        ? "bg-primary/20 border border-primary shadow-glow"
                         : "bg-secondary/50 border border-border/30"
                     )}
                   >
-                    <div className="text-2xl font-bold text-neon-blue">
+                    <div className="text-2xl font-bold text-primary">
                       {stage.count}
                     </div>
                     <div className="text-xs text-muted-foreground text-center font-medium">
@@ -170,7 +170,7 @@ export default function Dashboard() {
                         className={cn(
                           "transition-all duration-300",
                           animatedBatch > idx
-                            ? "text-neon-cyan"
+                            ? "text-primary"
                             : "text-muted-foreground/50"
                         )}
                       />
@@ -194,7 +194,7 @@ export default function Dashboard() {
               >
                 {/* reserved for stat icon */}
                 <p className="text-xs text-muted-foreground">{stat.label}</p>
-                <p className="text-sm font-bold text-neon-cyan mt-1">
+                <p className="text-sm font-bold text-primary mt-1">
                   {stat.value}
                 </p>
               </div>
@@ -204,11 +204,11 @@ export default function Dashboard() {
       </Card>
 
       {/* Live Activity Log */}
-      <Card className="bg-gradient-to-br from-card to-card/50 border-border/40 backdrop-blur-sm">
+      <Card className="bg-card border border-border/40">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <span>Live Activity</span>
-            <span className="inline-block w-2 h-2 rounded-full bg-neon-cyan animate-pulse"></span>
+            <span className="inline-block w-2 h-2 rounded-full bg-primary animate-pulse"></span>
           </CardTitle>
           <CardDescription>
             Recent simulation and batching events
@@ -224,7 +224,7 @@ export default function Dashboard() {
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1 space-y-2">
                     <div className="flex items-center gap-2">
-                      <span className="font-mono font-bold text-neon-blue">
+                      <span className="font-mono font-bold text-primary">
                         {activity.batch}
                       </span>
                       <span className="text-xs text-muted-foreground">
@@ -232,11 +232,11 @@ export default function Dashboard() {
                       </span>
                     </div>
                     <div className="flex flex-wrap gap-2 text-xs">
-                      <span className="px-2 py-1 bg-neon-blue/20 text-neon-blue rounded border border-neon-blue/30 font-medium flex items-center gap-1">
+                      <span className="px-2 py-1 bg-primary/20 text-primary rounded border border-primary/30 font-medium flex items-center gap-1">
                         <CheckCircle2 size={12} />
                         Proof verified
                       </span>
-                      <span className="px-2 py-1 bg-neon-purple/20 text-neon-purple rounded border border-neon-purple/30 font-medium flex items-center gap-1">
+                      <span className="px-2 py-1 bg-primary/20 text-primary rounded border border-primary/30 font-medium flex items-center gap-1">
                         <CheckCircle2 size={12} />
                         Anchored on {activity.chain}
                       </span>
@@ -268,25 +268,25 @@ export default function Dashboard() {
           {
             label: "Start Simulation",
             icon: Play,
-            gradient: "from-neon-blue to-neon-cyan",
+            gradient: "",
             description: "Run a local test",
           },
           {
             label: "Deploy Anchor",
             icon: Rocket,
-            gradient: "from-neon-purple to-neon-blue",
+            gradient: "",
             description: "Deploy to L1",
           },
           {
             label: "View Proof",
             icon: Search,
-            gradient: "from-neon-cyan to-neon-purple",
+            gradient: "",
             description: "Inspect details",
           },
           {
             label: "Simulate Audit",
             icon: CheckCircle2,
-            gradient: "from-neon-purple to-neon-blue",
+            gradient: "",
             description: "Security check",
           },
         ].map((btn, idx) => {
@@ -295,9 +295,8 @@ export default function Dashboard() {
             <Button
               key={idx}
               className={cn(
-                "h-auto p-4 flex flex-col items-start gap-2 bg-gradient-to-br hover:shadow-glow transition-all duration-300",
-                `${btn.gradient}`,
-                "text-white border-0"
+                "h-auto p-4 flex flex-col items-start gap-2 bg-primary hover:shadow-glow transition-all duration-300",
+                "text-primary-foreground border-0"
               )}
             >
               <Icon size={24} />

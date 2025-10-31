@@ -66,9 +66,6 @@ export default function Layout({ children }) {
   return (
     <div className={cn("min-h-screen", darkMode ? "dark" : "")}>
       <div className="min-h-screen bg-background text-foreground relative overflow-hidden">
-        {/* Animated background glow */}
-        <div className="pointer-events-none absolute -top-40 -right-40 w-[520px] h-[520px] rounded-full bg-gradient-to-br from-neon-blue/20 to-neon-purple/20 blur-3xl animate-pulse-slow" />
-        <div className="pointer-events-none absolute -bottom-40 -left-40 w-[520px] h-[520px] rounded-full bg-gradient-to-br from-neon-purple/15 to-neon-cyan/15 blur-3xl animate-pulse-slow" />
         {/* Top Navigation Bar */}
         <header className="fixed top-0 left-0 right-0 h-16 bg-card border-b border-border/30 backdrop-blur-md z-40 flex items-center justify-between px-4 md:px-6">
           <div className="flex items-center gap-4">
@@ -79,11 +76,11 @@ export default function Layout({ children }) {
               {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
             <div className="flex items-center gap-3">
-              <div className="relative w-8 h-8 rounded-lg bg-gradient-to-br from-neon-blue to-neon-purple flex items-center justify-center">
-                <div className="text-xl font-bold text-white">⚡</div>
+              <div className="relative w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
+                <div className="text-xl font-bold text-primary-foreground">⚡</div>
               </div>
               <div>
-                <h1 className="text-lg font-bold bg-gradient-to-r from-neon-blue to-neon-purple bg-clip-text text-transparent">
+                <h1 className="text-lg font-bold text-primary">
                   QuickSync
                 </h1>
                 <p className="text-xs text-muted-foreground">Playground</p>
@@ -142,7 +139,7 @@ export default function Layout({ children }) {
                 }
               }}
               disabled={deploying}
-              className="bg-gradient-to-r from-neon-blue to-neon-cyan gap-2 h-9 text-sm"
+              className="bg-primary text-primary-foreground gap-2 h-9 text-sm"
             >
               <Rocket size={16} />
               <span className="hidden sm:inline">{deploying ? "Deploying..." : "Deploy"}</span>
@@ -198,7 +195,7 @@ export default function Layout({ children }) {
                     className={cn(
                       "w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200",
                       active
-                        ? "bg-gradient-to-r from-neon-blue/20 to-neon-purple/20 border border-neon-blue/40 text-neon-blue shadow-glow"
+                        ? "bg-primary/20 border border-primary text-primary shadow-glow"
                         : "text-muted-foreground hover:text-foreground hover:bg-secondary/50 border border-transparent"
                     )}
                   >
@@ -215,7 +212,7 @@ export default function Layout({ children }) {
                   className={cn(
                     "w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200",
                     isActive("/docs")
-                      ? "bg-gradient-to-r from-neon-blue/20 to-neon-purple/20 border border-neon-blue/40 text-neon-blue shadow-glow"
+                      ? "bg-primary/20 border border-primary text-primary shadow-glow"
                       : "text-muted-foreground hover:text-foreground hover:bg-secondary/50 border border-transparent"
                   )}
                 >
@@ -230,7 +227,7 @@ export default function Layout({ children }) {
           <main
             className={cn(
               "flex-1 min-h-[calc(100vh-4rem)] overflow-auto",
-              "bg-gradient-to-br from-background via-background to-background"
+              "bg-background"
             )}
           >
             {children}
@@ -289,7 +286,7 @@ export default function Layout({ children }) {
           targetSelector={
             'a, button, [role="button"], [class*="rounded-lg"][class*="border"], [data-cursor-target], .cursor-target'
           }
-          spinDuration={2}
+          spinDuration={4}
         />
         {deployModalOpen && (
           <DeployModal
