@@ -1,0 +1,5 @@
+{
+  "defaultPlugin": "zkSync",
+  "reportDir": "./reports",
+  "logLevel": "info"
+}

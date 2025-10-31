@@ -1,0 +1,8 @@
+{
+  "timestamp": "2025-10-28T03-06-01-319Z",
+  "rollup": "Polygon CDK",
+  "proofType": "Mock ZK",
+  "txBatched": 68,
+  "batchLatency": "16 sec",
+  "gasSaved": "39%"
+}

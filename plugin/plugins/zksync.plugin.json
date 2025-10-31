@@ -1,0 +1,8 @@
+{
+  "name": "zkSync",
+  "version": "1.0.0",
+  "author": "ZeroSync Core",
+  "description": "zkSync rollup integration plugin for ZeroSync SDK",
+  "type": "zk",
+  "repository": "https://github.com/zerosync/zksync-plugin"
+}
