@@ -1,0 +1,16 @@
+{
+  "name": "zerosync-backend",
+  "type": "groth16-zk",
+  "version": "0.1.0",
+  "rollup": {
+    "batchSize": 10,
+    "blockTime": 2000,
+    "proofInterval": 5,
+    "gasLimit": 8000000
+  },
+  "chain": {
+    "target": "sepolia",
+    "rpcUrl": ""
+  },
+  "plugins": []
+}

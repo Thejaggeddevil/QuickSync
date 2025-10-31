@@ -1,0 +1,8 @@
+{
+  "name": "polygon-cdk",
+  "type": "zk",
+  "config": {
+    "prover": "circom",
+    "bridge": "plasma"
+  }
+}
