@@ -12,22 +12,27 @@ class L1Integration {
     this.anchorAddress = config.anchorAddress || process.env.ANCHOR_ADDRESS;
     this.verifierAddress = config.verifierAddress || process.env.VERIFIER_ADDRESS;
     this.privateKey = config.privateKey || process.env.PRIVATE_KEY;
+
+    if (!this.rpcUrl) {
+      throw new Error('SEPOLIA_RPC_URL is not set. Please provide it in config or .env file.');
+    }
+    if (!this.anchorAddress) {
+      throw new Error('ANCHOR_ADDRESS is not set. Please provide it in config or .env file.');
+    }
     
     // Load ABI
     const abiPath = path.join(__dirname, '../../../abi/ZeroSyncAnchor.json');
     this.anchorAbi = JSON.parse(fs.readFileSync(abiPath, 'utf8'));
     
     // Initialize provider and signer
-    if (this.rpcUrl) {
-      this.provider = new ethers.JsonRpcProvider(this.rpcUrl);
-      
-      if (this.privateKey) {
-        this.signer = new ethers.Wallet(this.privateKey, this.provider);
-        this.contract = new ethers.Contract(this.anchorAddress, this.anchorAbi, this.signer);
-      } else {
-        // Read-only mode
-        this.contract = new ethers.Contract(this.anchorAddress, this.anchorAbi, this.provider);
-      }
+    this.provider = new ethers.JsonRpcProvider(this.rpcUrl);
+    
+    if (this.privateKey) {
+      this.signer = new ethers.Wallet(this.privateKey, this.provider);
+      this.contract = new ethers.Contract(this.anchorAddress, this.anchorAbi, this.signer);
+    } else {
+      // Read-only mode
+      this.contract = new ethers.Contract(this.anchorAddress, this.anchorAbi, this.provider);
     }
     
     console.log(`📡 L1 Integration initialized`);
