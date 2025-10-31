@@ -1,0 +1,21 @@
+{
+  "name": "zkplugin",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "zk:compile": "powershell -NoProfile -ExecutionPolicy Bypass -File ./circuits/scripts/compile.ps1",
+    "zk:prove": "powershell -NoProfile -ExecutionPolicy Bypass -File ./circuits/scripts/prove.ps1",
+    "zk:verify": "powershell -NoProfile -ExecutionPolicy Bypass -File ./circuits/scripts/verify.ps1",
+    "zk:export:verifier": "powershell -NoProfile -ExecutionPolicy Bypass -File ./circuits/scripts/export-verifier.ps1",
+    "zk:setup-all": "npm run zk:compile && npm run zk:prove && npm run zk:verify && npm run zk:export:verifier"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "snarkjs": "^0.7.5"
+  }
+}

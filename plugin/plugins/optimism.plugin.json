@@ -1,0 +1,7 @@
+{
+  "name": "Optimism",
+  "version": "1.0.0",
+  "author": "ZeroSync Core",
+  "description": "Optimism Rollup Plugin for ZeroSync SDK",
+  "repository": "https://github.com/zerosync/optimism-plugin"
+}
