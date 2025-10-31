@@ -1,14 +1,14 @@
 {
   "network": "sepolia",
   "deployer": "0x40CEB901a74D1EcaeED5B1A4b3d6B08389bc43a7",
-  "timestamp": "2025-10-31T15:04:13.729Z",
-  "genesisRoot": "0x434eb8eff8f97652b064c0dcca14b253e7b7105293ac870b561dd273f3008a9c",
+  "timestamp": "2025-10-31T18:21:12.107Z",
+  "genesisRoot": "1000000000000000000",
   "contracts": {
-    "verifier": "0x5DFb8441a0735D303e38BCf294e4157e0485FE3e",
-    "anchor": "0xfB7adDeE76E9ba9e6E20C990815cD02fF7820aA9"
+    "verifier": "0x6bE66f0E6676b7A9f784714881d593d6317Cc548",
+    "anchor": "0xB0b09AD1Fd853f00b973d01f27a49546ABaDA505"
   },
   "transactionHashes": {
-    "verifier": "0x2558d04f8ca78126c244ab944825a230e92c75304e6bf7799dae78caf22fe4a5",
-    "anchor": "0x66304a3fb18c8eb96562fc7d8a953fae8c0fe8d6a2b0efb14d790aae51e864f5"
+    "verifier": "0xfd5a74d9472b6f66560d6975e35e97c47d7717c587135b719f3889453181327f",
+    "anchor": "0xfaea3b219abe71e4e9bf7fbdc2ff594972b4ecc2a745580bd82c198879721dec"
   }
 }

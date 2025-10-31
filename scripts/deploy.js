@@ -12,9 +12,11 @@ async function main() {
   console.log("👤 Deployer:", deployer.address);
   console.log("💰 Balance:", hre.ethers.formatEther(await hre.ethers.provider.getBalance(deployer.address)), "ETH\n");
 
-  // Genesis root (can be any initial state root, using keccak256 of "ZeroSync Genesis")
-  const genesisRoot = hre.ethers.keccak256(hre.ethers.toUtf8Bytes("ZeroSync Genesis"));
-  console.log("🌱 Genesis Root:", genesisRoot);
+  // Genesis root - MUST be compatible with BN254 field used by ZK circuit
+  // BN254 prime: 21888242871839275222246405745257275088548364400416034343698204186575808495617
+  // Using a simple value that fits in the field
+  const genesisRoot = "1000000000000000000"; // 1 billion (well within BN254 field)
+  console.log("🌱 Genesis Root (BN254-compatible):", genesisRoot);
 
   // Deploy Groth16Verifier
   console.log("\n📦 Deploying Groth16Verifier...");

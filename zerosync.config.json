@@ -1,6 +1,6 @@
 {
   "name": "zerosync-backend",
-  "type": "mock-zk",
+  "type": "groth16-zk",
   "version": "0.1.0",
   "rollup": {
     "batchSize": 10,

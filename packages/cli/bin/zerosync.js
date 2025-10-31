@@ -17,7 +17,7 @@ program
 program
   .command('init <project-name>')
   .description('Initialize a new ZeroSync rollup project')
-  .option('-t, --type <type>', 'Rollup type (mock-zk, polygon-cdk, zksync-stack)', 'mock-zk')
+  .option('-t, --type <type>', 'Rollup type (groth16-zk, polygon-cdk, zksync-stack)', 'groth16-zk')
   .action(initCommand);
 
 program
@@ -36,9 +36,8 @@ program
 
 program
   .command('run')
-  .description('Start live rollup mode (sequencer + proof engine)')
+  .description('Start live rollup mode with real ZK proofs (sequencer + proof engine)')
   .option('-p, --port <port>', 'API server port', '3001')
-  .option('--proof <mode>', 'Proof mode: zk or mock', 'mock')
   .option('--batch-size <size>', 'Batch size (transactions per batch)', '8')
   .option('--batch-timeout <ms>', 'Batch timeout in milliseconds', '10000')
   .action(runCommand);

@@ -10,7 +10,6 @@ class Sequencer extends EventEmitter {
     this.config = {
       batchSize: config.batchSize || 8,
       batchTimeout: config.batchTimeout || 10000, // 10 seconds
-      proofMode: config.proofMode || 'mock', // 'zk' or 'mock'
       dbPath: config.dbPath || './data/rollup.db',
       autoStart: config.autoStart !== false,
       ...config
@@ -28,7 +27,7 @@ class Sequencer extends EventEmitter {
     const savedRoot = this.db.getCurrentStateRoot();
     this.currentStateRoot = savedRoot || this.initializeStateRoot();
     
-    console.log(`✅ Sequencer initialized (proof mode: ${this.config.proofMode})`);
+    console.log(`✅ Sequencer initialized (real ZK proofs enabled)`);
   }
 
   // ========== INITIALIZATION ==========
@@ -196,15 +195,13 @@ class Sequencer extends EventEmitter {
       throw new Error(`Batch ${batchId} not found`);
     }
     
-    console.log(`🔍 Generating ${this.config.proofMode} proof for batch ${batchId}...`);
+    console.log(`🔍 Generating real ZK proof for batch ${batchId}...`);
     
     this.db.updateBatchStatus(batchId, 'proving');
     
     const startTime = Date.now();
     
     try {
-      let proof;
-      
       // Prepare batch data for proof generation
       const batchData = {
         id: `batch-${batchId}`,
@@ -214,13 +211,8 @@ class Sequencer extends EventEmitter {
         transactions: [] // We could load actual txs if needed
       };
       
-      if (this.config.proofMode === 'zk') {
-        // Generate real ZK proof
-        proof = await this.proofEngine.generateGroth16Proof(batchData);
-      } else {
-        // Generate mock proof
-        proof = await this.proofEngine.generateMockProof(batchData);
-      }
+      // Generate real ZK proof (Groth16)
+      const proof = await this.proofEngine.generateGroth16Proof(batchData);
       
       const endTime = Date.now();
       const generationTime = endTime - startTime;
@@ -267,7 +259,7 @@ class Sequencer extends EventEmitter {
       currentStateRoot: this.currentStateRoot,
       currentHeight: this.currentHeight,
       isRunning: this.isRunning,
-      proofMode: this.config.proofMode
+      proofMode: 'zk' // Always real ZK proofs
     };
   }
 

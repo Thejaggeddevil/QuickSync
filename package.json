@@ -7,17 +7,18 @@
     "packages/*"
   ],
   "scripts": {
+    "start": "node packages/api/src/server-v2.js",
     "cli": "node packages/cli/bin/zerosync.js",
     "zerosync": "node packages/cli/bin/zerosync.js",
     "simulate": "node packages/cli/bin/zerosync.js simulate",
     "run": "node packages/cli/bin/zerosync.js run",
-    "deploy": "node packages/cli/bin/zerosync.js deploy",
+    "deploy": "npx hardhat run scripts/deploy.js --network sepolia",
     "api": "node packages/api/src/server-v2.js",
-    "api:zk": "PROOF_MODE=zk node packages/api/src/server-v2.js",
-    "api:mock": "PROOF_MODE=mock node packages/api/src/server-v2.js",
     "dev": "npm run api",
     "setup-circuit": "node packages/sdk-core/scripts/setup-circuit.js",
     "test-zk": "node packages/sdk-core/test-zk-integration.js",
+    "test-l1": "node test-l1-integration.js",
+    "test-proof": "node submit-real-proof.js",
     "test-engine": "node test-rollup-engine.js",
     "test-system": "node test-complete-system.js"
   },

@@ -7,11 +7,10 @@ const port = process.env.PORT || 3000;
 // Middleware
 app.use(express.json());
 
-// Initialize sequencer with proof mode from environment
+// Initialize sequencer (always uses real ZK proofs)
 const sequencer = new Sequencer({
   batchSize: parseInt(process.env.BATCH_SIZE) || 8,
   batchTimeout: parseInt(process.env.BATCH_TIMEOUT) || 10000,
-  proofMode: process.env.PROOF_MODE || 'mock', // 'zk' or 'mock'
   dbPath: process.env.DB_PATH || './data/rollup.db'
 });
 
@@ -29,7 +28,7 @@ app.get('/', (req, res) => {
     status: 'ok',
     service: 'ZeroSync Rollup API',
     version: '0.1.0',
-    proofMode: sequencer.config.proofMode
+    proofMode: 'zk' // Always real ZK proofs
   });
 });
 
@@ -171,7 +170,7 @@ process.on('SIGINT', async () => {
 app.listen(port, () => {
   console.log(`\n✅ ZeroSync Rollup API Server`);
   console.log(`   Port: ${port}`);
-  console.log(`   Proof Mode: ${sequencer.config.proofMode}`);
+  console.log(`   Proof Mode: Real ZK (Groth16)`);
   console.log(`   Batch Size: ${sequencer.config.batchSize}`);
   console.log(`\n📡 API Endpoints:`);
   console.log(`   GET  /api/stats - Rollup statistics`);

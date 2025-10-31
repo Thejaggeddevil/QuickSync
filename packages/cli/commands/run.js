@@ -6,7 +6,7 @@ module.exports = async function run(options) {
   console.log(chalk.cyan('🚀 Starting ZeroSync Rollup Engine\n'));
   
   console.log(chalk.white('Configuration:'));
-  console.log(chalk.gray(`  Proof Mode: ${options.proof}`));
+  console.log(chalk.gray(`  Proof Mode: Real ZK (Groth16)`));
   console.log(chalk.gray(`  Batch Size: ${options.batchSize}`));
   console.log(chalk.gray(`  Batch Timeout: ${options.batchTimeout}ms`));
   console.log(chalk.gray(`  API Port: ${options.port}`));
@@ -19,7 +19,6 @@ module.exports = async function run(options) {
       env: { 
         ...process.env, 
         PORT: options.port,
-        PROOF_MODE: options.proof,
         BATCH_SIZE: options.batchSize,
         BATCH_TIMEOUT: options.batchTimeout
       },
