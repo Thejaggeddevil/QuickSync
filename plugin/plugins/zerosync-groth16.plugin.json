@@ -1,0 +1,52 @@
+{
+  "name": "zerosync-groth16",
+  "version": "1.0.0",
+  "type": "zk-rollup",
+  "description": "Real Groth16 ZK Rollup with BN254 field - Production Ready",
+  "author": "Manasvi",
+  "config": {
+    "proof_system": "Groth16",
+    "circuit": "circom + snarkjs",
+    "field": "BN254",
+    "backend_path": "../packages/api/src/server-v2.js",
+    "contracts": {
+      "verifier": "0x69D4621aE7EAc395F57bf2BF2FCEfbE73bA46c6c",
+      "anchor": "0x08cd4D682077Ce025Df8a9AD9ed6998d0782ad75",
+      "network": "sepolia"
+    },
+    "endpoints": {
+      "api": "http://localhost:3000",
+      "submit_tx": "/api/submit-tx",
+      "get_batches": "/api/batches",
+      "get_proofs": "/api/proofs",
+      "stats": "/api/stats"
+    }
+  },
+  "features": {
+    "real_zk_proofs": true,
+    "on_chain_verification": true,
+    "batch_processing": true,
+    "state_management": true,
+    "l1_integration": true
+  },
+  "commands": {
+    "start": "npm start",
+    "test": "npm run test-proof",
+    "deploy": "npm run deploy"
+  },
+  "dependencies": {
+    "snarkjs": "^0.7.4",
+    "circomlib": "^2.0.5",
+    "ethers": "^6.x"
+  },
+  "metrics": {
+    "proof_generation_time": "~500ms",
+    "gas_per_batch": "~250k",
+    "throughput": "8 tx/batch"
+  },
+  "links": {
+    "github": "https://github.com/Thejaggeddevil/QuickSync",
+    "contracts": "https://sepolia.etherscan.io/address/0x08cd4D682077Ce025Df8a9AD9ed6998d0782ad75",
+    "docs": "./docs/zerosync-groth16.md"
+  }
+}
