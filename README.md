@@ -1,9 +1,3 @@
-# ZeroSync Backend & SDK
-
-**Your part of the ZeroSync MVP - Backend, CLI, and SDK Core**
-
-Built by Manasvi
-
 ---
 
 ## 🚀 Overview
@@ -290,8 +284,4 @@ zerosync run --port 3002
 
 ---
 
-## 👤 Maintainer
 
-**Manasvi** - Backend & SDK Engineer
-
-Questions? Reach out to the team!
